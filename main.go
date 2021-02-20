@@ -9,17 +9,17 @@ import (
 
 func main() {
 	if err := ui.Init(); err != nil {
-		log.Fatalf("failed to initialize termui: %v", err)
+		log.Fatalf("Failed to start: %v", err)
 	}
 	defer ui.Close()
 
-	p := widgets.NewParagraph()
-	p.Text = "Hello World!"
-	p.Title = "Text"
-	p.ColorModel()
-	p.SetRect(0, 0, 14, 3)
+	Hello := widgets.NewParagraph()
+	Hello.Text = "Hello World!"
+	Hello.Title = "Text"
+	Hello.ColorModel()
+	Hello.SetRect(0, 0, len(Hello.Text) + 2, 3)
 
-	ui.Render(p)
+	ui.Render(Hello)
 
 	for e := range ui.PollEvents() {
 		if e.Type == ui.KeyboardEvent {
