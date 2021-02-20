@@ -1,26 +1,29 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
-	"github.com/jroimartin/gocui"
+	ui "github.com/gizak/termui/v3"
+	"github.com/gizak/termui/v3/widgets"
 )
 
 func main() {
-	g, err := gocui.NewGui(gocui.OutputNormal)
-	if err != nil {
-		log.Panicln(err)
+	if err := ui.Init(); err != nil {
+		log.Fatalf("failed to initialize termui: %v", err)
 	}
-	defer g.Close()
+	defer ui.Close()
 
-	g.SetManagerFunc(layout)
+	p := widgets.NewParagraph()
+	p.Text = "Hello World!"
+	p.Title = "Text"
+	p.ColorModel()
+	p.SetRect(0, 0, 14, 3)
 
-	if err := g.SetKeybinding("", gocui.KeyCtrlC, gocui.ModNone, quit); err != nil {
-		log.Panicln(err)
-	}
+	ui.Render(p)
 
-	if err := g.MainLoop(); err != nil && err != gocui.ErrQuit {
-		log.Panicln(err)
+	for e := range ui.PollEvents() {
+		if e.Type == ui.KeyboardEvent {
+			break
+		}
 	}
 }
